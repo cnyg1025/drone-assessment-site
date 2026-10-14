@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>YANG AI STUDIO — 开源低空智能评估平台 · 灾后定损与环境监测</title>
+  <meta name="description" content="面向灾后应急、环境监测与生态巡护的低空智能评估平台。以 1/10 成本、零 GCP 布点产出商业级航拍评估成果。开放 Pilot 合作与投资对接。" />
+  <meta property="og:title" content="YANG AI STUDIO — 开源低空智能评估平台" />
+  <meta property="og:description" content="1/10 成本、零 GCP 布点，商业级航拍评估能力。开放 Pilot 与投资对接。" />
+  <meta property="og:image" content="assets/hero.png" />
+  <meta property="og:type" content="website" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M3 12l9-9 9 9M5 10v10h14V10' fill='none' stroke='%232b8cff' stroke-width='2'/%3E%3C/svg%3E" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eef7ff', 100: '#d9edff', 200: '#bce0ff', 300: '#8eccff',
+              400: '#53aeff', 500: '#2b8cff', 600: '#1470f5', 700: '#0f5ae1',
+              800: '#134ab6', 900: '#163f8f',
+            },
+            ink: {
+              900: '#0a0f1c', 800: '#101728', 700: '#1a2236',
+              600: '#2a3552', 500: '#475569', 400: '#64748b',
+            }
+          },
+          fontFamily: {
+            sans: ['"PingFang SC"', '"Microsoft YaHei"', 'system-ui', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif; }
+    .gradient-text {
+      background: linear-gradient(90deg, #2b8cff, #8eccff, #2b8cff);
+      background-size: 200% 200%;
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: gradient-x 6s ease infinite;
+    }
+    @keyframes gradient-x {
+      0%,100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+    .hero-glow {
+      background:
+        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(43,140,255,0.25), transparent 70%),
+        radial-gradient(ellipse 60% 40% at 80% 50%, rgba(139,92,246,0.12), transparent 70%);
+    }
+    .grid-bg {
+      background-image:
+        linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+    .card-glow:hover { box-shadow: 0 0 0 1px rgba(43,140,255,0.4), 0 20px 50px -10px rgba(43,140,255,0.3); }
+    .glass {
+      background: rgba(255,255,255,0.03);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .badge {
+      background: linear-gradient(90deg, rgba(43,140,255,0.15), rgba(139,92,246,0.15));
+      border: 1px solid rgba(43,140,255,0.3);
+    }
+    html { scroll-behavior: smooth; }
+    .img-frame { border: 1px solid rgba(43,140,255,0.25); }
+    @media (prefers-reduced-motion: no-preference) {
+      .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
+      .reveal.visible { opacity: 1; transform: translateY(0); }
+    }
+    #lang-select { background-color: #101728; color: #e2e8f0; }
+    #lang-select option { background-color: #101728; color: #e2e8f0; }
+  </style>
+</head>
+<body class="bg-ink-900 text-slate-100 antialiased">
+
+  <!-- ============ NAV ============ -->
+  <nav class="fixed top-0 inset-x-0 z-50 glass">
+    <div class="max-w-7xl mx-auto px-4 md:px-6 h-16 flex items-center justify-between gap-3">
+      <a href="#top" class="flex items-center gap-2 font-bold text-lg shrink-0">
+        <svg class="w-8 h-8 text-brand-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 12l9-9 9 9M5 10v10h14V10"/>
+        </svg>
+        <span class="text-base tracking-widest font-extrabold">YANG AI STUDIO</span>
+      </a>
+      <div id="nav-links" class="hidden lg:flex items-center gap-7 text-sm text-slate-300">
+        <a href="#capabilities" class="hover:text-white" data-i18n="nav.capabilities">能力</a>
+        <a href="#proof" class="hover:text-white" data-i18n="nav.proof">验证</a>
+        <a href="#roadmap" class="hover:text-white" data-i18n="nav.roadmap">路线图</a>
+        <a href="#why" class="hover:text-white" data-i18n="nav.why">优势</a>
+        <a href="#partner" class="hover:text-white" data-i18n="nav.partner">合作</a>
+      </div>
+      <div class="flex items-center gap-2 md:gap-3">
+        <div class="relative flex items-center">
+          <svg class="w-4 h-4 text-slate-400 absolute left-2 pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 0 20 15.3 15.3 0 0 1 0-20z"/>
+          </svg>
+          <select id="lang-select" aria-label="Language"
+                  class="pl-7 pr-2 py-2 text-sm rounded-lg border border-white/10 focus:outline-none focus:border-brand-500 cursor-pointer appearance-none">
+            <option value="zh">中文</option>
+            <option value="en">EN</option>
+            <option value="fr">FR</option>
+          </select>
+        </div>
+        <a href="mailto:cnyg1025@users.noreply.github.com?subject=YANG%20AI%20STUDIO%20Demo%20%E9%A2%84%E7%BA%A6"
+           class="hidden md:block px-4 py-2 text-sm font-medium rounded-lg bg-brand-600 hover:bg-brand-500 text-white transition" data-i18n="nav.demo">预约 Demo</a>
+        <a href="https://github.com/cnyg1025/drone-disaster-platform" target="_blank" rel="noopener"
+           class="hidden sm:block px-3 py-2 text-sm font-medium rounded-lg glass text-slate-200 hover:text-white transition items-center gap-2">
+          <svg class="w-4 h-4 inline" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.7.5.7 5.5.7 11.8c0 5 3.2 9.2 7.7 10.7.6.1.8-.2.8-.6v-2.1c-3.1.7-3.8-1.5-3.8-1.5-.5-1.3-1.2-1.6-1.2-1.6-1-.7.1-.7.1-.7 1.1.1 1.7 1.2 1.7 1.2 1 1.7 2.7 1.2 3.3.9.1-.7.4-1.2.7-1.5-2.5-.3-5.1-1.2-5.1-5.5 0-1.2.4-2.2 1.2-3-.1-.3-.5-1.5.1-3 0 0 1-.3 3.2 1.1.9-.3 1.9-.4 2.9-.4s2 .1 2.9.4c2.2-1.4 3.2-1.1 3.2-1.1.6 1.6.2 2.7.1 3 .7.8 1.2 1.8 1.2 3 0 4.3-2.6 5.2-5.1 5.5.4.3.8 1 .8 2v3c0 .3.2.7.8.6 4.5-1.5 7.7-5.7 7.7-10.7C23.3 5.5 18.3.5 12 .5z"/></svg>
+          GitHub
+        </a>
+        <button id="menu-btn" class="lg:hidden p-2 text-slate-300 hover:text-white" aria-label="Menu">
+          <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
+      </div>
+    </div>
+    <div id="mobile-menu" class="hidden lg:hidden glass border-t border-white/5">
+      <div class="px-6 py-4 flex flex-col gap-4 text-sm text-slate-300">
+        <a href="#capabilities" class="hover:text-white" data-i18n="nav.capabilities">能力</a>
+        <a href="#proof" class="hover:text-white" data-i18n="nav.proof">验证</a>
+        <a href="#roadmap" class="hover:text-white" data-i18n="nav.roadmap">路线图</a>
+        <a href="#why" class="hover:text-white" data-i18n="nav.why">优势</a>
+        <a href="#partner" class="hover:text-white" data-i18n="nav.partner">合作</a>
+        <a href="mailto:cnyg1025@users.noreply.github.com?subject=YANG%20AI%20STUDIO%20Demo%20%E9%A2%84%E7%BA%A6" class="text-brand-400 font-semibold" data-i18n="nav.demoCta">预约 Demo →</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ============ HERO ============ -->
+  <section id="top" class="relative pt-32 pb-20 hero-glow overflow-hidden">
+    <div class="absolute inset-0 grid-bg opacity-40"></div>
+    <div class="relative max-w-7xl mx-auto px-6 text-center">
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 mb-8 rounded-full text-xs font-medium badge text-brand-200">
+        <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+        <span data-i18n="hero.badge">初创团队 · 平台 v0.4 内测中 · 开放 Pilot 合作与投资对接</span>
+      </div>
+      <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight leading-tight mb-6">
+        <span data-i18n="hero.h1a">开源低空智能评估平台</span><br/>
+        <span class="gradient-text" data-i18n="hero.h1b">让灾后评估，一次航拍完成</span>
+      </h1>
+      <p class="text-lg md:text-xl text-slate-300 max-w-3xl mx-auto mb-10 leading-relaxed" data-i18n="hero.p">
+        面向灾后应急、环境监测与生态巡护场景，以 <span class="text-brand-400 font-semibold">WebODM + 多源传感器 + AI 几何配准</span> 为核心，用 <span class="font-semibold text-white">1/10 成本</span>、<span class="font-semibold text-white">零 GCP 布点</span>产出商业级航拍评估成果。
+      </p>
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a href="mailto:cnyg1025@users.noreply.github.com?subject=YANG%20AI%20STUDIO%20Demo%20%E9%A2%84%E7%BA%A6"
+           class="px-7 py-3.5 rounded-lg bg-brand-600 hover:bg-brand-500 text-white font-semibold transition shadow-lg shadow-brand-600/30 flex items-center gap-2">
+          <span data-i18n="hero.cta1">预约产品 Demo</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <a href="#capabilities" class="px-7 py-3.5 rounded-lg glass text-slate-200 hover:text-white font-semibold transition" data-i18n="hero.cta2">查看核心能力 →</a>
+      </div>
+
+      <!-- 指标条 -->
+      <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+        <div class="glass rounded-2xl p-5">
+          <div class="text-3xl font-bold gradient-text"><span class="count" data-target="22.22" data-decimals="2">0</span>m</div>
+          <div class="text-xs text-slate-400 mt-1" data-i18n="hero.s1">配准漂移自动补偿</div>
+        </div>
+        <div class="glass rounded-2xl p-5">
+          <div class="text-3xl font-bold gradient-text"><span class="count" data-target="86.7" data-decimals="1">0</span>%</div>
+          <div class="text-xs text-slate-400 mt-1" data-i18n="hero.s2">热红外目标检出率</div>
+        </div>
+        <div class="glass rounded-2xl p-5">
+          <div class="text-3xl font-bold gradient-text"><span class="count" data-target="0.04" data-decimals="2">0</span>%</div>
+          <div class="text-xs text-slate-400 mt-1" data-i18n="hero.s3">植被分级误差</div>
+        </div>
+        <div class="glass rounded-2xl p-5">
+          <div class="text-3xl font-bold gradient-text">1/10</div>
+          <div class="text-xs text-slate-400 mt-1" data-i18n="hero.s4">对比商业方案成本</div>
+        </div>
+      </div>
+      <div class="text-xs text-slate-500 mt-4" data-i18n="hero.cap">以上为内部技术验证指标 · 详见下方「技术验证」</div>
+
+      <!-- Hero 主视觉 -->
+      <div class="mt-16 max-w-5xl mx-auto reveal">
+        <div class="img-frame rounded-2xl overflow-hidden shadow-2xl shadow-brand-900/40">
+          <img src="assets/hero.png" alt="Aerial scanning" class="w-full h-auto" loading="eager" />
+        </div>
+        <div class="text-xs text-slate-500 mt-3" data-i18n="hero.imgcap">航拍扫描作业示意 · 自动扫描网格 · 无需地面控制点</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CAPABILITIES ============ -->
+  <section id="capabilities" class="py-24 bg-ink-800/50">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="text-center mb-16">
+        <div class="text-brand-400 text-sm font-semibold tracking-widest uppercase mb-3" data-i18n="cap.eyebrow">4 大核心能力</div>
+        <h2 class="text-4xl md:text-5xl font-bold" data-i18n="cap.h2">从航拍到洞察，端到端打通</h2>
+        <p class="text-slate-400 mt-4 max-w-2xl mx-auto" data-i18n="cap.sub">四大模块已完成端到端开发与内部验证，正在寻找真实场景落地。</p>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-6">
+
+        <div class="card-glow glass rounded-2xl p-7 transition">
+          <div class="w-12 h-12 rounded-xl bg-brand-500/20 flex items-center justify-center mb-5">
+            <svg class="w-6 h-6 text-brand-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold mb-2" data-i18n="cap.c1t">3D 重建任务管理</h3>
+          <p class="text-slate-400 mb-4" data-i18n="cap.c1d">上传多视影像，自动 SfM 摄影测量，输出正射图/DSM/DTM/点云。</p>
+          <div class="text-xs text-slate-500" data-i18n="cap.c1n">支持 18~1000+ 张影像 · 单任务 5~30 分钟</div>
+        </div>
+
+        <div class="card-glow rounded-2xl p-7 transition relative overflow-hidden border border-brand-500/40"
+             style="background: linear-gradient(135deg, rgba(43,140,255,0.12), rgba(139,92,246,0.08))">
+          <div class="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-amber-500/20 text-amber-300 text-xs font-semibold border border-amber-500/30" data-i18n="cap.c2b">⭐ 核心差异化</div>
+          <div class="w-12 h-12 rounded-xl bg-amber-500/20 flex items-center justify-center mb-5">
+            <svg class="w-6 h-6 text-amber-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M7 17l5-5 5 5M7 7h10M7 12h10"/>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold mb-2" data-i18n="cap.c2t">双期自动配准定损</h3>
+          <p class="text-slate-300 mb-4" data-i18n="cap.c2d">FFT 互相关自动补偿两期地理漂移 · 中位数基准垂直对齐 · 差值可视化与统计。</p>
+          <div class="text-xs text-slate-400" data-i18n="cap.c2n">验证指标：22.22m 水平偏移自动补偿 · RMS 7.6m</div>
+        </div>
+
+        <div class="card-glow glass rounded-2xl p-7 transition">
+          <div class="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center mb-5">
+            <svg class="w-6 h-6 text-purple-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M12 1v6M12 17v6M4.22 4.22l4.24 4.24M15.54 15.54l4.24 4.24M1 12h6M17 12h6M4.22 19.78l4.24-4.24M15.54 8.46l4.24-4.24"/>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold mb-2" data-i18n="cap.c3t">UXO 未爆物探测</h3>
+          <p class="text-slate-400 mb-4" data-i18n="cap.c3d">EMI 电磁感应 + GPR 探地雷达 + MAG 磁法三源融合，AI 聚类风险分级。</p>
+          <div class="text-xs text-slate-500" data-i18n="cap.c3n">S1~S5 阶段全链路完成 · 含专家审核流</div>
+        </div>
+
+        <div class="card-glow rounded-2xl p-7 transition relative overflow-hidden border border-emerald-500/30"
+             style="background: linear-gradient(135deg, rgba(16,185,129,0.10), rgba(20,184,166,0.06))">
+          <div class="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-semibold border border-emerald-500/30" data-i18n="cap.c4b">🆕 v0.4 新增</div>
+          <div class="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center mb-5">
+            <svg class="w-6 h-6 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 3v18h18M7 14l4-4 4 4 5-5"/>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold mb-2" data-i18n="cap.c4t">传感器智能分析</h3>
+          <p class="text-slate-300 mb-4" data-i18n="cap.c4d">4a 热红外野生动物探测 + 4b 多光谱植被受损分级，DBSCAN 聚群 + 多指数融合。</p>
+          <div class="text-xs text-slate-400" data-i18n="cap.c4n">内部基准：检出率 86.7% · 分级误差 0.04%</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PLATFORM SHOWCASE ============ -->
+  <section id="platform" class="py-24">
+    <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
+      <div class="reveal">
+        <div class="text-brand-400 text-sm font-semibold tracking-widest uppercase mb-3" data-i18n="plat.eyebrow">平台全景</div>
+        <h2 class="text-4xl font-bold mb-6" data-i18n="plat.h2">一张 DSM，看见整个现场</h2>
+        <p class="text-slate-300 leading-relaxed mb-6" data-i18n="plat.p">
+          影像上传后自动完成 SfM 三维重建，输出带高程色带的数字表面模型。水系、坡度、冲沟、侵蚀陡坎——全部量化为可追溯的数据，而不是一堆靠肉眼判断的照片。
+        </p>
+        <ul class="space-y-3 text-sm text-slate-300">
+          <li class="flex items-center gap-3"><span class="w-1.5 h-1.5 rounded-full bg-brand-500 shrink-0"></span><span data-i18n="plat.l1">正射图 / DSM / DTM / 点云一键输出</span></li>
+          <li class="flex items-center gap-3"><span class="w-1.5 h-1.5 rounded-full bg-brand-500 shrink-0"></span><span data-i18n="plat.l2">异步任务队列 + 进度轮询 + 历史归档</span></li>
+          <li class="flex items-center gap-3"><span class="w-1.5 h-1.5 rounded-full bg-brand-500 shrink-0"></span><span data-i18n="plat.l3">所有中间产物落 artifacts/ 目录，可复现可审计</span></li>
+        </ul>
+      </div>
+      <div class="reveal">
+        <div class="img-frame rounded-2xl overflow-hidden shadow-2xl shadow-brand-900/40">
+          <img src="assets/dsm-3d.png" alt="DSM 3D" class="w-full h-auto" loading="lazy" />
+        </div>
+        <div class="text-xs text-slate-500 mt-3 text-center" data-i18n="plat.imgcap">3D 重建输出示意（DSM 高程色带）</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PROOF ============ -->
+  <section id="proof" class="py-24 bg-ink-800/50">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="text-center mb-16">
+        <div class="text-brand-400 text-sm font-semibold tracking-widest uppercase mb-3" data-i18n="proof.eyebrow">技术验证</div>
+        <h2 class="text-4xl md:text-5xl font-bold" data-i18n="proof.h2">每个能力，都有量化指标</h2>
+        <p class="text-slate-400 mt-4 max-w-2xl mx-auto" data-i18n="proof.sub">以下为开发阶段基于公开数据集与合成基准的技术验证结果。</p>
+      </div>
+
+      <div class="space-y-10">
+
+        <!-- Proof 1 -->
+        <div class="glass rounded-2xl p-8 grid md:grid-cols-2 gap-8 items-center reveal">
+          <div class="img-frame rounded-xl overflow-hidden">
+            <img src="assets/case-orthophoto.png" alt="Orthophoto comparison" class="w-full h-auto" loading="lazy" />
+          </div>
+          <div>
+            <div class="flex items-center gap-3 mb-2">
+              <span class="text-xs text-brand-400 font-semibold tracking-widest" data-i18n="proof.p1label">验证 01 · 对比定损</span>
+              <span class="px-2 py-0.5 rounded-full text-xs bg-blue-500/15 text-blue-300 border border-blue-500/30" data-i18n="proof.tagPublic">公开数据集</span>
+            </div>
+            <h3 class="text-2xl font-bold mb-3" data-i18n="proof.p1h3">brighton_beach 双期对比定损</h3>
+            <p class="text-slate-300 leading-relaxed mb-4" data-i18n="proof.p1p">
+              基于 18 张公开航拍影像（约 0.3 km² 海岸线）构造灾前/灾后双期场景。在<strong class="text-white">无 GCP</strong> 条件下，两期重建地理放置差 <span class="text-amber-400 font-semibold">22.22m</span>，平台自动 FFT 配准补偿至 RMS <span class="text-emerald-400 font-semibold">7.6m</span>，达到可交付的定损精度。
+            </p>
+            <div class="flex gap-3 mb-4">
+              <div class="bg-ink-900 rounded-xl px-4 py-3 border border-slate-700">
+                <div class="text-xl font-bold text-amber-400">22.22m</div>
+                <div class="text-xs text-slate-400" data-i18n="proof.p1c1">自动补偿偏移</div>
+              </div>
+              <div class="bg-ink-900 rounded-xl px-4 py-3 border border-slate-700">
+                <div class="text-xl font-bold text-emerald-400">7.6m</div>
+                <div class="text-xs text-slate-400" data-i18n="proof.p1c2">配准后 RMS</div>
+              </div>
+            </div>
+            <span class="text-xs text-slate-500" data-i18n="proof.p1n">说明：无需地面控制点即可对齐双期成果，适用于灾后无布点条件的应急评估</span>
+          </div>
+        </div>
+
+        <!-- Proof 2 -->
+        <div class="glass rounded-2xl p-8 grid md:grid-cols-2 gap-8 items-center reveal">
+          <div class="md:order-2">
+            <div class="img-frame rounded-xl overflow-hidden">
+              <img src="assets/case-ndvi.png" alt="NDVI classification" class="w-full h-auto" loading="lazy" />
+            </div>
+          </div>
+          <div class="md:order-1">
+            <div class="flex items-center gap-3 mb-2">
+              <span class="text-xs text-emerald-400 font-semibold tracking-widest" data-i18n="proof.p2label">验证 02 · 多光谱</span>
+              <span class="px-2 py-0.5 rounded-full text-xs bg-emerald-500/15 text-emerald-300 border border-emerald-500/30" data-i18n="proof.tagSynthetic">合成基准</span>
+            </div>
+            <h3 class="text-2xl font-bold mb-3" data-i18n="proof.p2h3">植被受损 4 级分级精度</h3>
+            <p class="text-slate-300 leading-relaxed mb-4" data-i18n="proof.p2p">
+              构造 4 类植被（健康/轻损/重损/枯死）各占 25% 的标准验证场景。平台输出分级面积比 <span class="text-white font-mono">25.01% / 24.99% / 25.00% / 25.00%</span>，<span class="text-emerald-400 font-semibold">误差 0.04%</span>，分级算法达到可用精度。
+            </p>
+            <div class="flex gap-3 mb-4">
+              <div class="bg-ink-900 rounded-xl px-4 py-3 border border-slate-700">
+                <div class="text-xl font-bold text-emerald-400">0.04%</div>
+                <div class="text-xs text-slate-400" data-i18n="proof.p2c1">分级误差</div>
+              </div>
+              <div class="bg-ink-900 rounded-xl px-4 py-3 border border-slate-700">
+                <div class="text-xl font-bold text-white">4</div>
+                <div class="text-xs text-slate-400" data-i18n="proof.p2c2">受损等级</div>
+              </div>
+            </div>
+            <span class="text-xs text-slate-500" data-i18n="proof.p2n">5 波段融合 NDVI/NDRE/GNDVI/NDWI 多指数</span>
+          </div>
+        </div>
+
+        <!-- Proof 3 -->
+        <div class="glass rounded-2xl p-8 grid md:grid-cols-2 gap-8 items-center reveal">
+          <div class="img-frame rounded-xl overflow-hidden">
+            <img src="assets/case-thermal.png" alt="Thermal detection" class="w-full h-auto" loading="lazy" />
+          </div>
+          <div>
+            <div class="flex items-center gap-3 mb-2">
+              <span class="text-xs text-purple-400 font-semibold tracking-widest" data-i18n="proof.p3label">验证 03 · 热红外</span>
+              <span class="px-2 py-0.5 rounded-full text-xs bg-purple-500/15 text-purple-300 border border-purple-500/30" data-i18n="proof.tagSynthetic2">合成基准</span>
+            </div>
+            <h3 class="text-2xl font-bold mb-3" data-i18n="proof.p3h3">热红外野生动物探测</h3>
+            <p class="text-slate-300 leading-relaxed mb-4" data-i18n="proof.p3p">
+              构造 30 只热源个体（10 群）、背景 25°C / 目标 35°C、叠加 0.5°C 噪声的模拟场景。平台检测到 <span class="text-white font-semibold">26 只</span>，<span class="text-emerald-400 font-semibold">检出率 86.7%</span>，误检 0。
+            </p>
+            <div class="flex gap-3 mb-4">
+              <div class="bg-ink-900 rounded-xl px-4 py-3 border border-slate-700">
+                <div class="text-xl font-bold text-purple-400">26/30</div>
+                <div class="text-xs text-slate-400" data-i18n="proof.p3c1">检出 86.7%</div>
+              </div>
+              <div class="bg-ink-900 rounded-xl px-4 py-3 border border-slate-700">
+                <div class="text-xl font-bold text-emerald-400">0</div>
+                <div class="text-xs text-slate-400" data-i18n="proof.p3c2">误检</div>
+              </div>
+            </div>
+            <span class="text-xs text-slate-500" data-i18n="proof.p3n">路线图：V2 将升级为 YOLO 真物种识别</span>
+          </div>
+        </div>
+
+      </div>
+      <p class="text-center text-xs text-slate-500 mt-8" data-i18n="proof.note">注：验证区配图为 AI 生成示意图，仅用于版式演示；正式对外将替换为平台真实成果截图。</p>
+      <div class="glass rounded-2xl p-6 mt-6 text-center max-w-3xl mx-auto">
+        <p class="text-sm text-slate-300">
+          <span data-i18n="proof.ctaA">我们正在寻找</span><strong class="text-white" data-i18n="proof.ctaB">首批 Pilot 客户</strong><span data-i18n="proof.ctaC">，在真实业务场景中验证平台价值——</span>
+          <a href="mailto:cnyg1025@users.noreply.github.com?subject=YANG%20AI%20STUDIO%20Pilot%20%E5%90%88%E4%BD%9C" class="text-brand-400 font-semibold hover:text-brand-300" data-i18n="proof.ctaD">聊聊你的场景 →</a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ROADMAP ============ -->
+  <section id="roadmap" class="py-24">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="text-center mb-16">
+        <div class="text-brand-400 text-sm font-semibold tracking-widest uppercase mb-3" data-i18n="road.eyebrow">路线图</div>
+        <h2 class="text-4xl md:text-5xl font-bold" data-i18n="road.h2">从技术验证，走向商业化</h2>
+      </div>
+
+      <div class="relative">
+        <div class="hidden md:block absolute top-5 left-0 right-0 h-px bg-gradient-to-r from-brand-500/60 via-slate-600 to-slate-800"></div>
+        <div class="grid md:grid-cols-4 gap-8">
+          <div class="reveal">
+            <div class="w-10 h-10 rounded-full bg-brand-600 flex items-center justify-center font-bold text-sm mb-4 relative ring-4 ring-ink-900">✓</div>
+            <div class="text-xs font-semibold text-emerald-400 mb-1 tracking-widest" data-i18n="road.s1a">已完成 · 当前</div>
+            <h3 class="font-bold mb-2" data-i18n="road.s1t">v0.4 · 全链路贯通</h3>
+            <p class="text-sm text-slate-400" data-i18n="road.s1d">四大模块端到端可用，技术验证全部通过，AI RAG 文档问答上线。</p>
+          </div>
+          <div class="reveal">
+            <div class="w-10 h-10 rounded-full bg-ink-700 border border-brand-500/50 flex items-center justify-center font-bold text-sm text-brand-400 mb-4 relative ring-4 ring-ink-900">2</div>
+            <div class="text-xs font-semibold text-brand-400 mb-1 tracking-widest" data-i18n="road.s2a">进行中</div>
+            <h3 class="font-bold mb-2" data-i18n="road.s2t">真实场景 Pilot</h3>
+            <p class="text-sm text-slate-400" data-i18n="road.s2d">与无人机服务商 / 保险 / 应急部门合作，在真实灾后与巡护任务中验证交付质量。</p>
+          </div>
+          <div class="reveal">
+            <div class="w-10 h-10 rounded-full bg-ink-700 border border-slate-600 flex items-center justify-center font-bold text-sm text-slate-400 mb-4 relative ring-4 ring-ink-900">3</div>
+            <div class="text-xs font-semibold text-slate-400 mb-1 tracking-widest" data-i18n="road.s3a">规划中</div>
+            <h3 class="font-bold mb-2" data-i18n="road.s3t">V1 → V2 识别升级</h3>
+            <p class="text-sm text-slate-400" data-i18n="road.s3d">V1 稳定交付；V2 引入 YOLO 真物种识别与更智能的异常检测模型。</p>
+          </div>
+          <div class="reveal">
+            <div class="w-10 h-10 rounded-full bg-ink-700 border border-slate-700 flex items-center justify-center font-bold text-sm text-slate-500 mb-4 relative ring-4 ring-ink-900">4</div>
+            <div class="text-xs font-semibold text-slate-500 mb-1 tracking-widest" data-i18n="road.s4a">远期</div>
+            <h3 class="font-bold mb-2" data-i18n="road.s4t">行业方案商业化</h3>
+            <p class="text-sm text-slate-400" data-i18n="road.s4d">面向灾后定损、环境监测、生态巡护的行业化解决方案与订阅服务。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ WHY ============ -->
+  <section id="why" class="py-24 bg-ink-800/50">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="text-center mb-16">
+        <div class="text-brand-400 text-sm font-semibold tracking-widest uppercase mb-3" data-i18n="why.eyebrow">为什么是 YANG AI STUDIO</div>
+        <h2 class="text-4xl md:text-5xl font-bold" data-i18n="why.h2">刚需市场 × 结构性成本优势</h2>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-6 mb-12">
+        <div class="glass rounded-2xl p-7">
+          <div class="text-brand-400 text-2xl font-bold mb-2">01</div>
+          <h3 class="font-bold mb-2 text-lg" data-i18n="why.c1t">刚需且高频的市场</h3>
+          <p class="text-sm text-slate-400 leading-relaxed" data-i18n="why.c1d">灾后应急评估、保险定损、环境监测、生态巡护——每年大量任务依赖航拍，但商用方案（大疆司空等）年费 5 万起，中小机构难以负担，大量需求未被满足。</p>
+        </div>
+        <div class="glass rounded-2xl p-7">
+          <div class="text-brand-400 text-2xl font-bold mb-2">02</div>
+          <h3 class="font-bold mb-2 text-lg" data-i18n="why.c2t">1/10 成本的结构性优势</h3>
+          <p class="text-sm text-slate-400 leading-relaxed" data-i18n="why.c2d">完全开源技术栈 + 私有化部署，无授权费、无数据外流。客户的数据、模型、部署完全自主可控，这对政府与保险客户是关键卖点。</p>
+        </div>
+        <div class="glass rounded-2xl p-7">
+          <div class="text-brand-400 text-2xl font-bold mb-2">03</div>
+          <h3 class="font-bold mb-2 text-lg" data-i18n="why.c3t">有壁垒的技术差异化</h3>
+          <p class="text-sm text-slate-400 leading-relaxed" data-i18n="why.c3d">零 GCP 自动配准（FFT 相位相关 + 保守校验）、UXO 三源融合探测、多传感器一体化分析——均为自研算法，且有量化验证指标支撑。</p>
+        </div>
+        <div class="glass rounded-2xl p-7">
+          <div class="text-brand-400 text-2xl font-bold mb-2">04</div>
+          <h3 class="font-bold mb-2 text-lg" data-i18n="why.c4t">工程可信，可复现可审计</h3>
+          <p class="text-sm text-slate-400 leading-relaxed" data-i18n="why.c4d">所有中间产物与统计结果落 artifacts/ 目录，算法选型（MAD/FFT/DBSCAN）均有实测对比。这不是 PPT 项目，是可运行的平台。</p>
+        </div>
+      </div>
+
+      <div class="glass rounded-2xl p-8">
+        <h3 class="text-lg font-bold mb-6 text-center" data-i18n="why.stack">技术栈</h3>
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-4 text-center text-sm">
+          <div>
+            <div class="text-slate-500 text-xs mb-1" data-i18n="why.f1">前端</div>
+            <div class="font-semibold">React 19 + Vite 5</div>
+          </div>
+          <div>
+            <div class="text-slate-500 text-xs mb-1" data-i18n="why.f2">后端</div>
+            <div class="font-semibold">FastAPI 0.115</div>
+          </div>
+          <div>
+            <div class="text-slate-500 text-xs mb-1" data-i18n="why.f3">栅格计算</div>
+            <div class="font-semibold">rasterio + scipy</div>
+          </div>
+          <div>
+            <div class="text-slate-500 text-xs mb-1" data-i18n="why.f4">三维重建</div>
+            <div class="font-semibold">WebODM</div>
+          </div>
+          <div>
+            <div class="text-slate-500 text-xs mb-1">AI</div>
+            <div class="font-semibold">DeepSeek + RAG</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PARTNER ============ -->
+  <section id="partner" class="py-24">
+    <div class="max-w-5xl mx-auto px-6">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl md:text-4xl font-bold mb-4" data-i18n="part.h2">与我们一起，把能力变成产品</h2>
+        <p class="text-slate-400" data-i18n="part.sub">无论你是潜在客户、投资人还是研究伙伴，都欢迎聊聊。</p>
+      </div>
+      <div class="grid md:grid-cols-3 gap-4">
+        <a href="mailto:cnyg1025@users.noreply.github.com?subject=YANG%20AI%20STUDIO%20Pilot%20%E5%90%88%E4%BD%9C"
+           class="glass rounded-2xl p-7 hover:border-brand-500/40 transition card-glow">
+          <div class="text-brand-400 font-semibold mb-2" data-i18n="part.c1t">试点合作 · Pilot</div>
+          <div class="text-sm text-slate-400 leading-relaxed" data-i18n="part.c1d">无人机服务商 · 保险定损 · 应急管理部门 · 环境巡护机构<br/><br/>免费在真实场景中试用平台，共同打磨交付。</div>
+          <div class="text-xs text-brand-400 mt-4 font-semibold" data-i18n="part.c1cta">聊聊你的场景 →</div>
+        </a>
+        <a href="mailto:cnyg1025@users.noreply.github.com?subject=YANG%20AI%20STUDIO%20%E6%8A%95%E8%B5%84%E5%AF%B9%E6%8E%A5"
+           class="rounded-2xl p-7 transition card-glow relative overflow-hidden border border-brand-500/40"
+           style="background: linear-gradient(135deg, rgba(43,140,255,0.12), rgba(139,92,246,0.08))">
+          <div class="text-amber-300 font-semibold mb-2" data-i18n="part.c2t">投资对接</div>
+          <div class="text-sm text-slate-300 leading-relaxed" data-i18n="part.c2d">我们正在筹备种子轮融资。<br/><br/>获取商业计划书、技术验证报告与在线 Demo。</div>
+          <div class="text-xs text-brand-300 mt-4 font-semibold" data-i18n="part.c2cta">预约投资人 Demo →</div>
+        </a>
+        <a href="mailto:cnyg1025@users.noreply.github.com?subject=YANG%20AI%20STUDIO%20%E5%AD%A6%E6%9C%AF%E5%90%88%E4%BD%9C"
+           class="glass rounded-2xl p-7 hover:border-brand-500/40 transition card-glow">
+          <div class="text-emerald-400 font-semibold mb-2" data-i18n="part.c3t">学术合作</div>
+          <div class="text-sm text-slate-400 leading-relaxed" data-i18n="part.c3d">遥感 · 生态监测 · 排爆工程相关院系与课题组。<br/><br/>开放数据集与算法验证成果，欢迎联合研究。</div>
+          <div class="text-xs text-emerald-400 mt-4 font-semibold" data-i18n="part.c3cta">交流研究想法 →</div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="py-10 border-t border-slate-800">
+    <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-slate-500">
+      <div>© 2026 YANG AI STUDIO · Apache 2.0 · cnyg1025/drone-disaster-platform</div>
+      <div class="flex items-center gap-5">
+        <a href="https://github.com/cnyg1025/drone-disaster-platform" target="_blank" rel="noopener" class="hover:text-white">GitHub</a>
+        <a href="https://github.com/cnyg1025/drone-disaster-platform#readme" target="_blank" rel="noopener" class="hover:text-white" data-i18n="foot.docs">文档</a>
+        <a href="https://github.com/cnyg1025/drone-disaster-platform/issues" target="_blank" rel="noopener" class="hover:text-white" data-i18n="foot.feedback">反馈</a>
+        <a href="mailto:cnyg1025@users.noreply.github.com" class="hover:text-white" data-i18n="foot.contact">联系</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ============ i18n ============
+    const I18N = {
+      zh: {
+        _title: "YANG AI STUDIO — 开源低空智能评估平台 · 灾后定损与环境监测",
+        "nav.capabilities": "能力", "nav.proof": "验证", "nav.roadmap": "路线图", "nav.why": "优势", "nav.partner": "合作",
+        "nav.demo": "预约 Demo", "nav.demoCta": "预约 Demo →",
+        "hero.badge": "初创团队 · 平台 v0.4 内测中 · 开放 Pilot 合作与投资对接",
+        "hero.h1a": "开源低空智能评估平台", "hero.h1b": "让灾后评估，一次航拍完成",
+        "hero.p": "面向灾后应急、环境监测与生态巡护场景，以 <span class='text-brand-400 font-semibold'>WebODM + 多源传感器 + AI 几何配准</span> 为核心，用 <span class='font-semibold text-white'>1/10 成本</span>、<span class='font-semibold text-white'>零 GCP 布点</span>产出商业级航拍评估成果。",
+        "hero.cta1": "预约产品 Demo", "hero.cta2": "查看核心能力 →",
+        "hero.s1": "配准漂移自动补偿", "hero.s2": "热红外目标检出率", "hero.s3": "植被分级误差", "hero.s4": "对比商业方案成本",
+        "hero.cap": "以上为内部技术验证指标 · 详见下方「技术验证」",
+        "hero.imgcap": "航拍扫描作业示意 · 自动扫描网格 · 无需地面控制点",
+        "cap.eyebrow": "4 大核心能力", "cap.h2": "从航拍到洞察，端到端打通",
+        "cap.sub": "四大模块已完成端到端开发与内部验证，正在寻找真实场景落地。",
+        "cap.c1t": "3D 重建任务管理", "cap.c1d": "上传多视影像，自动 SfM 摄影测量，输出正射图/DSM/DTM/点云。", "cap.c1n": "支持 18~1000+ 张影像 · 单任务 5~30 分钟",
+        "cap.c2b": "⭐ 核心差异化", "cap.c2t": "双期自动配准定损", "cap.c2d": "FFT 互相关自动补偿两期地理漂移 · 中位数基准垂直对齐 · 差值可视化与统计。", "cap.c2n": "验证指标：22.22m 水平偏移自动补偿 · RMS 7.6m",
+        "cap.c3t": "UXO 未爆物探测", "cap.c3d": "EMI 电磁感应 + GPR 探地雷达 + MAG 磁法三源融合，AI 聚类风险分级。", "cap.c3n": "S1~S5 阶段全链路完成 · 含专家审核流",
+        "cap.c4b": "🆕 v0.4 新增", "cap.c4t": "传感器智能分析", "cap.c4d": "4a 热红外野生动物探测 + 4b 多光谱植被受损分级，DBSCAN 聚群 + 多指数融合。", "cap.c4n": "内部基准：检出率 86.7% · 分级误差 0.04%",
+        "plat.eyebrow": "平台全景", "plat.h2": "一张 DSM，看见整个现场",
+        "plat.p": "影像上传后自动完成 SfM 三维重建，输出带高程色带的数字表面模型。水系、坡度、冲沟、侵蚀陡坎——全部量化为可追溯的数据，而不是一堆靠肉眼判断的照片。",
+        "plat.l1": "正射图 / DSM / DTM / 点云一键输出", "plat.l2": "异步任务队列 + 进度轮询 + 历史归档", "plat.l3": "所有中间产物落 artifacts/ 目录，可复现可审计",
+        "plat.imgcap": "3D 重建输出示意（DSM 高程色带）",
+        "proof.eyebrow": "技术验证", "proof.h2": "每个能力，都有量化指标",
+        "proof.sub": "以下为开发阶段基于公开数据集与合成基准的技术验证结果。",
+        "proof.tagPublic": "公开数据集", "proof.tagSynthetic": "合成基准", "proof.tagSynthetic2": "合成基准",
+        "proof.p1label": "验证 01 · 对比定损", "proof.p1h3": "brighton_beach 双期对比定损",
+        "proof.p1p": "基于 18 张公开航拍影像（约 0.3 km² 海岸线）构造灾前/灾后双期场景。在<strong class='text-white'>无 GCP</strong> 条件下，两期重建地理放置差 <span class='text-amber-400 font-semibold'>22.22m</span>，平台自动 FFT 配准补偿至 RMS <span class='text-emerald-400 font-semibold'>7.6m</span>，达到可交付的定损精度。",
+        "proof.p1c1": "自动补偿偏移", "proof.p1c2": "配准后 RMS",
+        "proof.p1n": "说明：无需地面控制点即可对齐双期成果，适用于灾后无布点条件的应急评估",
+        "proof.p2label": "验证 02 · 多光谱", "proof.p2h3": "植被受损 4 级分级精度",
+        "proof.p2p": "构造 4 类植被（健康/轻损/重损/枯死）各占 25% 的标准验证场景。平台输出分级面积比 <span class='text-white font-mono'>25.01% / 24.99% / 25.00% / 25.00%</span>，<span class='text-emerald-400 font-semibold'>误差 0.04%</span>，分级算法达到可用精度。",
+        "proof.p2c1": "分级误差", "proof.p2c2": "受损等级", "proof.p2n": "5 波段融合 NDVI/NDRE/GNDVI/NDWI 多指数",
+        "proof.p3label": "验证 03 · 热红外", "proof.p3h3": "热红外野生动物探测",
+        "proof.p3p": "构造 30 只热源个体（10 群）、背景 25°C / 目标 35°C、叠加 0.5°C 噪声的模拟场景。平台检测到 <span class='text-white font-semibold'>26 只</span>，<span class='text-emerald-400 font-semibold'>检出率 86.7%</span>，误检 0。",
+        "proof.p3c1": "检出 86.7%", "proof.p3c2": "误检", "proof.p3n": "路线图：V2 将升级为 YOLO 真物种识别",
+        "proof.note": "注：验证区配图为 AI 生成示意图，仅用于版式演示；正式对外将替换为平台真实成果截图。",
+        "proof.ctaA": "我们正在寻找", "proof.ctaB": "首批 Pilot 客户", "proof.ctaC": "，在真实业务场景中验证平台价值——", "proof.ctaD": "聊聊你的场景 →",
+        "road.eyebrow": "路线图", "road.h2": "从技术验证，走向商业化",
+        "road.s1a": "已完成 · 当前", "road.s1t": "v0.4 · 全链路贯通", "road.s1d": "四大模块端到端可用，技术验证全部通过，AI RAG 文档问答上线。",
+        "road.s2a": "进行中", "road.s2t": "真实场景 Pilot", "road.s2d": "与无人机服务商 / 保险 / 应急部门合作，在真实灾后与巡护任务中验证交付质量。",
+        "road.s3a": "规划中", "road.s3t": "V1 → V2 识别升级", "road.s3d": "V1 稳定交付；V2 引入 YOLO 真物种识别与更智能的异常检测模型。",
+        "road.s4a": "远期", "road.s4t": "行业方案商业化", "road.s4d": "面向灾后定损、环境监测、生态巡护的行业化解决方案与订阅服务。",
+        "why.eyebrow": "为什么是 YANG AI STUDIO", "why.h2": "刚需市场 × 结构性成本优势",
+        "why.c1t": "刚需且高频的市场", "why.c1d": "灾后应急评估、保险定损、环境监测、生态巡护——每年大量任务依赖航拍，但商用方案（大疆司空等）年费 5 万起，中小机构难以负担，大量需求未被满足。",
+        "why.c2t": "1/10 成本的结构性优势", "why.c2d": "完全开源技术栈 + 私有化部署，无授权费、无数据外流。客户的数据、模型、部署完全自主可控，这对政府与保险客户是关键卖点。",
+        "why.c3t": "有壁垒的技术差异化", "why.c3d": "零 GCP 自动配准（FFT 相位相关 + 保守校验）、UXO 三源融合探测、多传感器一体化分析——均为自研算法，且有量化验证指标支撑。",
+        "why.c4t": "工程可信，可复现可审计", "why.c4d": "所有中间产物与统计结果落 artifacts/ 目录，算法选型（MAD/FFT/DBSCAN）均有实测对比。这不是 PPT 项目，是可运行的平台。",
+        "why.stack": "技术栈", "why.f1": "前端", "why.f2": "后端", "why.f3": "栅格计算", "why.f4": "三维重建",
+        "part.h2": "与我们一起，把能力变成产品", "part.sub": "无论你是潜在客户、投资人还是研究伙伴，都欢迎聊聊。",
+        "part.c1t": "试点合作 · Pilot", "part.c1d": "无人机服务商 · 保险定损 · 应急管理部门 · 环境巡护机构<br/><br/>免费在真实场景中试用平台，共同打磨交付。", "part.c1cta": "聊聊你的场景 →",
+        "part.c2t": "投资对接", "part.c2d": "我们正在筹备种子轮融资。<br/><br/>获取商业计划书、技术验证报告与在线 Demo。", "part.c2cta": "预约投资人 Demo →",
+        "part.c3t": "学术合作", "part.c3d": "遥感 · 生态监测 · 排爆工程相关院系与课题组。<br/><br/>开放数据集与算法验证成果，欢迎联合研究。", "part.c3cta": "交流研究想法 →",
+        "foot.docs": "文档", "foot.feedback": "反馈", "foot.contact": "联系"
+      },
+      en: {
+        _title: "YANG AI STUDIO — Open-source Low-altitude Intelligent Assessment Platform",
+        "nav.capabilities": "Capabilities", "nav.proof": "Validation", "nav.roadmap": "Roadmap", "nav.why": "Why us", "nav.partner": "Partner",
+        "nav.demo": "Book a demo", "nav.demoCta": "Book a demo →",
+        "hero.badge": "Startup · Platform v0.4 in private beta · Pilot & investor discussions open",
+        "hero.h1a": "Open-source low-altitude", "hero.h1b": "Post-disaster assessment in a single flight",
+        "hero.p": "Built for disaster response, environmental monitoring and ecological patrol — powered by <span class='text-brand-400 font-semibold'>WebODM + multi-sensor fusion + AI geometric registration</span>, delivering <span class='font-semibold text-white'>commercial-grade</span> aerial assessment at <span class='font-semibold text-white'>1/10 the cost</span>, with zero GCP placement.",
+        "hero.cta1": "Book a product demo", "hero.cta2": "Explore core capabilities →",
+        "hero.s1": "Auto-compensated registration drift", "hero.s2": "Thermal target detection rate", "hero.s3": "Vegetation classification error", "hero.s4": "Cost vs commercial solutions",
+        "hero.cap": "Internal technical validation metrics · see \"Validation\" below",
+        "hero.imgcap": "Aerial scanning illustration · automatic grid · no ground control points needed",
+        "cap.eyebrow": "4 core capabilities", "cap.h2": "From aerial capture to insight, end to end",
+        "cap.sub": "All four modules are end-to-end complete and internally validated — now seeking real-world deployments.",
+        "cap.c1t": "3D reconstruction task management", "cap.c1d": "Upload multi-view imagery; automatic SfM photogrammetry outputs orthophoto/DSM/DTM/point cloud.", "cap.c1n": "18–1000+ images per task · 5–30 min per task",
+        "cap.c2b": "⭐ Core differentiator", "cap.c2t": "Two-epoch automatic registration & damage assessment", "cap.c2d": "FFT cross-correlation auto-compensates geographic drift between epochs · median vertical datum alignment · difference visualization & statistics.", "cap.c2n": "Validated: 22.22 m horizontal offset auto-compensated · RMS 7.6 m",
+        "cap.c3t": "UXO detection", "cap.c3d": "EMI + GPR + MAG three-source fusion with AI clustering risk grading.", "cap.c3n": "Full pipeline complete through S1–S5 · expert review workflow",
+        "cap.c4b": "🆕 New in v0.4", "cap.c4t": "Intelligent sensor analytics", "cap.c4d": "4a thermal wildlife detection + 4b multispectral vegetation damage grading, DBSCAN clustering + multi-index fusion.", "cap.c4n": "Internal benchmark: 86.7% detection · 0.04% grading error",
+        "plat.eyebrow": "Platform overview", "plat.h2": "One DSM, the whole site at a glance",
+        "plat.p": "Imagery is automatically reconstructed into a color-ramped digital surface model. Waterways, slopes, gullies, erosion scarps — everything quantified into traceable data, not a pile of photos to eyeball.",
+        "plat.l1": "One-click orthophoto / DSM / DTM / point cloud output", "plat.l2": "Async task queue + progress polling + history archive", "plat.l3": "All intermediates stored in artifacts/ — reproducible and auditable",
+        "plat.imgcap": "3D reconstruction output (DSM elevation ramp)",
+        "proof.eyebrow": "Technical validation", "proof.h2": "Every capability, quantified",
+        "proof.sub": "Development-stage validation on public datasets and synthetic benchmarks.",
+        "proof.tagPublic": "Public dataset", "proof.tagSynthetic": "Synthetic benchmark", "proof.tagSynthetic2": "Synthetic benchmark",
+        "proof.p1label": "Validation 01 · Change detection", "proof.p1h3": "brighton_beach two-epoch damage assessment",
+        "proof.p1p": "Two-epoch pre/post-disaster scenario built from 18 public aerial images (~0.3 km² of coastline). Without GCPs, the two reconstructions drifted <span class='text-amber-400 font-semibold'>22.22 m</span> apart; automatic FFT registration compensated to <span class='text-emerald-400 font-semibold'>7.6 m RMS</span> — deliverable damage-assessment accuracy.",
+        "proof.p1c1": "Auto-compensated offset", "proof.p1c2": "Post-registration RMS",
+        "proof.p1n": "Both epochs aligned without ground control points — suited to post-disaster rapid assessment with no field setup",
+        "proof.p2label": "Validation 02 · Multispectral", "proof.p2h3": "4-level vegetation damage grading accuracy",
+        "proof.p2p": "A reference scene with four vegetation classes (healthy / light / severe / dead) at 25% each. Platform output: <span class='text-white font-mono'>25.01% / 24.99% / 25.00% / 25.00%</span> — <span class='text-emerald-400 font-semibold'>0.04% error</span>, production-ready accuracy.",
+        "proof.p2c1": "Grading error", "proof.p2c2": "Damage levels", "proof.p2n": "5-band fusion: NDVI / NDRE / GNDVI / NDWI",
+        "proof.p3label": "Validation 03 · Thermal", "proof.p3h3": "Thermal wildlife detection",
+        "proof.p3p": "Simulated scene: 30 thermal individuals (10 herds), 25 °C background / 35 °C targets, 0.5 °C noise. The platform detected <span class='text-white font-semibold'>26</span> — <span class='text-emerald-400 font-semibold'>86.7% detection</span>, zero false positives.",
+        "proof.p3c1": "86.7% detected", "proof.p3c2": "False positives", "proof.p3n": "Roadmap: V2 upgrades to YOLO species identification",
+        "proof.note": "Note: validation images are AI-generated placeholders for layout demonstration; they will be replaced with real platform outputs.",
+        "proof.ctaA": "We are looking for ", "proof.ctaB": "our first pilot customers", "proof.ctaC": " to validate the platform in real operations — ", "proof.ctaD": "tell us about your use case →",
+        "road.eyebrow": "Roadmap", "road.h2": "From technical validation to commercialization",
+        "road.s1a": "Done · Current", "road.s1t": "v0.4 · Full pipeline", "road.s1d": "All four modules end-to-end, validation passed, AI RAG document Q&A live.",
+        "road.s2a": "In progress", "road.s2t": "Real-world pilots", "road.s2d": "Partnering with drone operators, insurers and emergency agencies to validate delivery quality on real missions.",
+        "road.s3a": "Planned", "road.s3t": "V1 → V2 recognition upgrade", "road.s3d": "V1 stable delivery; V2 introduces YOLO species identification and smarter anomaly detection.",
+        "road.s4a": "Long-term", "road.s4t": "Industry solutions at scale", "road.s4d": "Sector solutions and subscriptions for post-disaster assessment, environmental monitoring and ecological patrol.",
+        "why.eyebrow": "Why YANG AI STUDIO", "why.h2": "Essential market × structural cost advantage",
+        "why.c1t": "An essential, high-frequency market", "why.c1d": "Post-disaster assessment, insurance claims, environmental monitoring, ecological patrol — countless aerial missions every year, while commercial suites start at ¥50k/year, leaving most small organizations unserved.",
+        "why.c2t": "Structural 1/10 cost advantage", "why.c2d": "Fully open-source stack + on-premise deployment: no license fees, no data leakage. Full sovereignty over data, models and deployment — decisive for government and insurance buyers.",
+        "why.c3t": "Defensible technical differentiation", "why.c3d": "Zero-GCP automatic registration (FFT phase correlation + conservative checks), three-source UXO fusion, unified multi-sensor analytics — all in-house algorithms with quantified validation.",
+        "why.c4t": "Engineering credibility: reproducible, auditable", "why.c4d": "Every intermediate and statistic lands in artifacts/; algorithm choices (MAD/FFT/DBSCAN) are backed by measured comparisons. Not a slide deck — a running platform.",
+        "why.stack": "Tech stack", "why.f1": "Frontend", "why.f2": "Backend", "why.f3": "Raster computing", "why.f4": "3D reconstruction",
+        "part.h2": "Join us in turning capability into product", "part.sub": "Customer, investor or research partner — let's talk.",
+        "part.c1t": "Pilot program", "part.c1d": "Drone operators · insurers · emergency agencies · patrol organizations<br/><br/>Trial the platform free in real scenarios and shape the delivery together.", "part.c1cta": "Tell us your use case →",
+        "part.c2t": "Investor relations", "part.c2d": "We are preparing a seed round.<br/><br/>Get the deck, the validation report and a live demo.", "part.c2cta": "Book an investor demo →",
+        "part.c3t": "Academic collaboration", "part.c3d": "Remote sensing, ecology and UXO research groups.<br/><br/>Datasets and validation results available for joint research.", "part.c3cta": "Exchange research ideas →",
+        "foot.docs": "Docs", "foot.feedback": "Feedback", "foot.contact": "Contact"
+      },
+      fr: {
+        _title: "YANG AI STUDIO — Plateforme open-source d'évaluation intelligente en basse altitude",
+        "nav.capabilities": "Capacités", "nav.proof": "Validation", "nav.roadmap": "Feuille de route", "nav.why": "Pourquoi nous", "nav.partner": "Partenariat",
+        "nav.demo": "Demander une démo", "nav.demoCta": "Demander une démo →",
+        "hero.badge": "Startup · Plateforme v0.4 en bêta · ouverte aux pilotes et aux investisseurs",
+        "hero.h1a": "Plateforme open-source", "hero.h1b": "L'évaluation post-catastrophe en un seul vol",
+        "hero.p": "Conçue pour l'urgence post-catastrophe, le suivi environnemental et la patrouille écologique — propulsée par <span class='text-brand-400 font-semibold'>WebODM + capteurs multi-sources + recalage géométrique par IA</span>, elle livre des évaluations aériennes de <span class='font-semibold text-white'>niveau professionnel</span> pour <span class='font-semibold text-white'>1/10 du coût</span>, sans aucun point de contrôle au sol.",
+        "hero.cta1": "Demander une démo produit", "hero.cta2": "Découvrir les capacités clés →",
+        "hero.s1": "Dérive de recalage auto-compensée", "hero.s2": "Taux de détection thermique", "hero.s3": "Erreur de classification végétale", "hero.s4": "Coût vs solutions commerciales",
+        "hero.cap": "Indicateurs de validation technique interne · voir « Validation » ci-dessous",
+        "hero.imgcap": "Illustration de scan aérien · grille automatique · sans point de contrôle au sol",
+        "cap.eyebrow": "4 capacités clés", "cap.h2": "De la prise de vue aérienne à l'analyse, de bout en bout",
+        "cap.sub": "Les quatre modules sont développés et validés en interne — nous cherchons des déploiements réels.",
+        "cap.c1t": "Gestion des tâches de reconstruction 3D", "cap.c1d": "Téléversez des images multi-vues : photogrammétrie SfM automatique, sorties orthophoto/MNS/MNT/nuage de points.", "cap.c1n": "18 à 1000+ images par tâche · 5 à 30 min par tâche",
+        "cap.c2b": "⭐ Différenciateur clé", "cap.c2t": "Évaluation des dégâts par recalage automatique bi-période", "cap.c2d": "La corrélation croisée FFT compense automatiquement la dérive géographique entre les deux périodes · alignement vertical par médiane · visualisation et statistiques des écarts.", "cap.c2n": "Validé : décalage horizontal de 22,22 m auto-compensé · RMS 7,6 m",
+        "cap.c3t": "Détection UXO", "cap.c3d": "Fusion triple EMI + GPR + MAG, classification des risques par clustering IA.", "cap.c3n": "Chaîne complète S1–S5 · flux de validation expert",
+        "cap.c4b": "🆕 Nouveau en v0.4", "cap.c4t": "Analyse intelligente des capteurs", "cap.c4d": "4a détection thermique de la faune + 4b classification multispectrale des dégâts végétaux, clustering DBSCAN + fusion multi-indices.", "cap.c4n": "Benchmark interne : 86,7 % de détection · 0,04 % d'erreur",
+        "plat.eyebrow": "Aperçu de la plateforme", "plat.h2": "Un MNS, tout le site en un coup d'œil",
+        "plat.p": "Les images sont reconstruites automatiquement en un modèle numérique de surface coloré. Cours d'eau, pentes, ravins, escarpements d'érosion — tout est quantifié en données traçables, pas en photos à évaluer à l'œil.",
+        "plat.l1": "Orthophoto / MNS / MNT / nuage de points en un clic", "plat.l2": "File de tâches asynchrone + suivi de progression + archivage", "plat.l3": "Tous les intermédiaires dans artifacts/ — reproductible et auditable",
+        "plat.imgcap": "Sortie de reconstruction 3D (rampes d'élévation MNS)",
+        "proof.eyebrow": "Validation technique", "proof.h2": "Chaque capacité, quantifiée",
+        "proof.sub": "Validation en phase de développement sur jeux de données publics et bancs synthétiques.",
+        "proof.tagPublic": "Jeu de données public", "proof.tagSynthetic": "Banc synthétique", "proof.tagSynthetic2": "Banc synthétique",
+        "proof.p1label": "Validation 01 · Détection de changements", "proof.p1h3": "Évaluation bi-période brighton_beach",
+        "proof.p1p": "Scénario avant/après construit à partir de 18 images aériennes publiques (~0,3 km² de littoral). Sans points de contrôle, les deux reconstructions divergeaient de <span class='text-amber-400 font-semibold'>22,22 m</span> ; le recalage FFT automatique a compensé à <span class='text-emerald-400 font-semibold'>7,6 m RMS</span> — une précision livrable.",
+        "proof.p1c1": "Décalage auto-compensé", "proof.p1c2": "RMS après recalage",
+        "proof.p1n": "Alignement sans points de contrôle — adapté à l'évaluation d'urgence post-catastrophe sans installation terrain",
+        "proof.p2label": "Validation 02 · Multispectral", "proof.p2h3": "Précision de classification des dégâts végétaux en 4 niveaux",
+        "proof.p2p": "Scène de référence avec quatre classes de végétation (saine / légère / sévère / morte) à 25 % chacune. Sortie de la plateforme : <span class='text-white font-mono'>25,01 % / 24,99 % / 25,00 % / 25,00 %</span> — <span class='text-emerald-400 font-semibold'>0,04 % d'erreur</span>, précision exploitable.",
+        "proof.p2c1": "Erreur de classification", "proof.p2c2": "Niveaux de dégâts", "proof.p2n": "Fusion 5 bandes : NDVI / NDRE / GNDVI / NDWI",
+        "proof.p3label": "Validation 03 · Thermique", "proof.p3h3": "Détection thermique de la faune",
+        "proof.p3p": "Scène simulée : 30 individus thermiques (10 troupeaux), fond 25 °C / cibles 35 °C, bruit 0,5 °C. La plateforme en a détecté <span class='text-white font-semibold'>26</span> — <span class='text-emerald-400 font-semibold'>86,7 % de détection</span>, zéro faux positif.",
+        "proof.p3c1": "86,7 % détectés", "proof.p3c2": "Faux positifs", "proof.p3n": "Feuille de route : V2 passera à l'identification d'espèces par YOLO",
+        "proof.note": "Note : les images sont des maquettes générées par IA pour la démonstration de mise en page ; elles seront remplacées par de vrais livrables de la plateforme.",
+        "proof.ctaA": "Nous cherchons ", "proof.ctaB": "nos premiers clients pilotes", "proof.ctaC": " pour valider la plateforme en conditions réelles — ", "proof.ctaD": "parlons de votre cas d'usage →",
+        "road.eyebrow": "Feuille de route", "road.h2": "De la validation technique à la commercialisation",
+        "road.s1a": "Terminé · Actuel", "road.s1t": "v0.4 · Chaîne complète", "road.s1d": "Quatre modules de bout en bout, validation réussie, Q&R documentaire par IA en ligne.",
+        "road.s2a": "En cours", "road.s2t": "Pilotes réels", "road.s2d": "Partenariats avec opérateurs de drones, assureurs et services d'urgence pour valider la qualité en mission réelle.",
+        "road.s3a": "Prévu", "road.s3t": "V1 → V2 montée en reconnaissance", "road.s3d": "V1 livrable stable ; V2 introduit l'identification d'espèces par YOLO et une détection d'anomalies plus intelligente.",
+        "road.s4a": "Long terme", "road.s4t": "Commercialisation sectorielle", "road.s4d": "Solutions sectorielles et abonnements pour l'évaluation post-catastrophe, le suivi environnemental et la patrouille écologique.",
+        "why.eyebrow": "Pourquoi YANG AI STUDIO", "why.h2": "Marché essentiel × avantage structurel de coût",
+        "why.c1t": "Un marché essentiel et fréquent", "why.c1d": "Évaluation post-catastrophe, expertise d'assurance, suivi environnemental, patrouille écologique — d'innombrables missions aériennes chaque année, alors que les suites commerciales démarrent à 50 000 ¥/an, laissant la plupart des petits acteurs non servis.",
+        "why.c2t": "Avantage structurel : 1/10 du coût", "why.c2d": "Pile entièrement open source + déploiement sur site : pas de licence, pas de fuite de données. Souveraineté totale sur les données, modèles et déploiements — décisif pour les clients publics et les assureurs.",
+        "why.c3t": "Différenciation technique défendable", "why.c3d": "Recalage automatique sans GCP (corrélation de phase FFT + contrôles conservateurs), fusion triple pour les UXO, analyse multi-capteurs unifiée — algorithmes maison et validation chiffrée.",
+        "why.c4t": "Crédibilité d'ingénierie : reproductible et auditable", "why.c4d": "Chaque intermédiaire et statistique est archivé dans artifacts/ ; les choix d'algorithmes (MAD/FFT/DBSCAN) sont appuyés par des mesures. Pas une présentation — une plateforme qui tourne.",
+        "why.stack": "Pile technique", "why.f1": "Front-end", "why.f2": "Back-end", "why.f3": "Calcul raster", "why.f4": "Reconstruction 3D",
+        "part.h2": "Construisons ensemble le produit", "part.sub": "Client, investisseur ou partenaire de recherche — parlons-en.",
+        "part.c1t": "Programme pilote", "part.c1d": "Opérateurs de drones · assureurs · services d'urgence · structures de patrouille<br/><br/>Essayez la plateforme gratuitement en conditions réelles.", "part.c1cta": "Parlons de votre cas d'usage →",
+        "part.c2t": "Relations investisseurs", "part.c2d": "Nous préparons un tour d'amorçage.<br/><br/>Recevez le deck, le rapport de validation et une démo en ligne.", "part.c2cta": "Réserver une démo investisseurs →",
+        "part.c3t": "Coopération académique", "part.c3d": "Équipes en télédétection, écologie et déminage.<br/><br/>Jeux de données et résultats de validation ouverts à la recherche conjointe.", "part.c3cta": "Échangeons sur vos idées →",
+        "foot.docs": "Docs", "foot.feedback": "Retours", "foot.contact": "Contact"
+      }
+    };
+
+    const langSelect = document.getElementById('lang-select');
+    function setLang(lang) {
+      if (!I18N[lang]) lang = 'zh';
+      const dict = I18N[lang];
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.dataset.i18n;
+        if (dict[key] !== undefined) el.innerHTML = dict[key];
+      });
+      document.documentElement.lang = lang === 'zh' ? 'zh-CN' : lang;
+      document.title = dict._title;
+      try { localStorage.setItem('yang-lang', lang); } catch (e) {}
+      langSelect.value = lang;
+    }
+    langSelect.addEventListener('change', () => setLang(langSelect.value));
+    let saved = 'zh';
+    try { saved = localStorage.getItem('yang-lang') || 'zh'; } catch (e) {}
+    setLang(saved);
+
+    // ============ 移动端菜单 ============
+    const menuBtn = document.getElementById('menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    menuBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+    mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mobileMenu.classList.add('hidden')));
+
+    // ============ 数字滚动动画 ============
+    const animateCount = (el) => {
+      const target = parseFloat(el.dataset.target);
+      const decimals = parseInt(el.dataset.decimals || '0', 10);
+      const duration = 1600;
+      const start = performance.now();
+      const step = (now) => {
+        const p = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = (target * eased).toFixed(decimals);
+        if (p < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    };
+    const countObserver = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { animateCount(e.target); countObserver.unobserve(e.target); }
+      });
+    }, { threshold: 0.5 });
+    document.querySelectorAll('.count').forEach(el => countObserver.observe(el));
+
+    // ============ 滚动浮现 ============
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); revealObserver.unobserve(e.target); }
+      });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+  </script>
+</body>
+</html>
