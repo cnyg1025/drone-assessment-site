@@ -7,33 +7,17 @@
   <meta name="description" content="面向灾后应急、环境监测与生态巡护的低空智能评估平台。以 1/10 成本、零 GCP 布点产出商业级航拍评估成果。开放 Pilot 合作与投资对接。" />
   <meta property="og:title" content="YANG AI STUDIO — 开源低空智能评估平台" />
   <meta property="og:description" content="1/10 成本、零 GCP 布点，商业级航拍评估能力。开放 Pilot 与投资对接。" />
-  <meta property="og:image" content="assets/hero.png" />
   <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://cnyg1025.github.io/drone-assessment-site/" />
+  <meta property="og:site_name" content="YANG AI STUDIO" />
+  <meta property="og:image" content="https://cnyg1025.github.io/drone-assessment-site/assets/hero.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="YANG AI STUDIO — 开源低空智能评估平台" />
+  <meta name="twitter:description" content="1/10 成本、零 GCP 布点，商业级航拍评估能力。开放 Pilot 与投资对接。" />
+  <meta name="twitter:image" content="https://cnyg1025.github.io/drone-assessment-site/assets/hero.png" />
+  <link rel="canonical" href="https://cnyg1025.github.io/drone-assessment-site/" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M3 12l9-9 9 9M5 10v10h14V10' fill='none' stroke='%232b8cff' stroke-width='2'/%3E%3C/svg%3E" />
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            brand: {
-              50: '#eef7ff', 100: '#d9edff', 200: '#bce0ff', 300: '#8eccff',
-              400: '#53aeff', 500: '#2b8cff', 600: '#1470f5', 700: '#0f5ae1',
-              800: '#134ab6', 900: '#163f8f',
-            },
-            ink: {
-              900: '#0a0f1c', 800: '#101728', 700: '#1a2236',
-              600: '#2a3552', 500: '#475569', 400: '#64748b',
-            }
-          },
-          fontFamily: {
-            sans: ['"PingFang SC"', '"Microsoft YaHei"', 'system-ui', 'sans-serif'],
-          },
-        }
-      }
-    }
-  </script>
-  <style>
+<style>
     body { font-family: 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif; }
     .gradient-text {
       background: linear-gradient(90deg, #2b8cff, #8eccff, #2b8cff);
@@ -76,6 +60,8 @@
     #lang-select { background-color: #101728; color: #e2e8f0; }
     #lang-select option { background-color: #101728; color: #e2e8f0; }
   </style>
+  <!-- 预编译样式（原 Tailwind Play CDN） -->
+  <link rel="stylesheet" href="tailwind.css" />
 </head>
 <body class="bg-ink-900 text-slate-100 antialiased">
 
@@ -109,7 +95,7 @@
         </div>
         <a href="mailto:cnyg1025@users.noreply.github.com?subject=YANG%20AI%20STUDIO%20Demo%20%E9%A2%84%E7%BA%A6"
            class="hidden md:block px-4 py-2 text-sm font-medium rounded-lg bg-brand-600 hover:bg-brand-500 text-white transition" data-i18n="nav.demo">预约 Demo</a>
-        <a href="https://github.com/cnyg1025/drone-disaster-platform" target="_blank" rel="noopener"
+        <a href="https://github.com/cnyg1025" target="_blank" rel="noopener"
            class="hidden sm:block px-3 py-2 text-sm font-medium rounded-lg glass text-slate-200 hover:text-white transition items-center gap-2">
           <svg class="w-4 h-4 inline" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.7.5.7 5.5.7 11.8c0 5 3.2 9.2 7.7 10.7.6.1.8-.2.8-.6v-2.1c-3.1.7-3.8-1.5-3.8-1.5-.5-1.3-1.2-1.6-1.2-1.6-1-.7.1-.7.1-.7 1.1.1 1.7 1.2 1.7 1.2 1 1.7 2.7 1.2 3.3.9.1-.7.4-1.2.7-1.5-2.5-.3-5.1-1.2-5.1-5.5 0-1.2.4-2.2 1.2-3-.1-.3-.5-1.5.1-3 0 0 1-.3 3.2 1.1.9-.3 1.9-.4 2.9-.4s2 .1 2.9.4c2.2-1.4 3.2-1.1 3.2-1.1.6 1.6.2 2.7.1 3 .7.8 1.2 1.8 1.2 3 0 4.3-2.6 5.2-5.1 5.5.4.3.8 1 .8 2v3c0 .3.2.7.8.6 4.5-1.5 7.7-5.7 7.7-10.7C23.3 5.5 18.3.5 12 .5z"/></svg>
           GitHub
@@ -158,15 +144,15 @@
       <!-- 指标条 -->
       <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
         <div class="glass rounded-2xl p-5">
-          <div class="text-3xl font-bold gradient-text"><span class="count" data-target="22.22" data-decimals="2">0</span>m</div>
+          <div class="text-3xl font-bold gradient-text"><span class="count" data-target="22.22" data-decimals="2">22.22</span>m</div>
           <div class="text-xs text-slate-400 mt-1" data-i18n="hero.s1">配准漂移自动补偿</div>
         </div>
         <div class="glass rounded-2xl p-5">
-          <div class="text-3xl font-bold gradient-text"><span class="count" data-target="86.7" data-decimals="1">0</span>%</div>
+          <div class="text-3xl font-bold gradient-text"><span class="count" data-target="86.7" data-decimals="1">86.7</span>%</div>
           <div class="text-xs text-slate-400 mt-1" data-i18n="hero.s2">热红外目标检出率</div>
         </div>
         <div class="glass rounded-2xl p-5">
-          <div class="text-3xl font-bold gradient-text"><span class="count" data-target="0.04" data-decimals="2">0</span>%</div>
+          <div class="text-3xl font-bold gradient-text"><span class="count" data-target="0.04" data-decimals="2">0.04</span>%</div>
           <div class="text-xs text-slate-400 mt-1" data-i18n="hero.s3">植被分级误差</div>
         </div>
         <div class="glass rounded-2xl p-5">
@@ -515,11 +501,11 @@
   <!-- ============ FOOTER ============ -->
   <footer class="py-10 border-t border-slate-800">
     <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-slate-500">
-      <div>© 2026 YANG AI STUDIO · Apache 2.0 · cnyg1025/drone-disaster-platform</div>
+      <div>© 2026 YANG AI STUDIO · Apache 2.0</div>
       <div class="flex items-center gap-5">
-        <a href="https://github.com/cnyg1025/drone-disaster-platform" target="_blank" rel="noopener" class="hover:text-white">GitHub</a>
-        <a href="https://github.com/cnyg1025/drone-disaster-platform#readme" target="_blank" rel="noopener" class="hover:text-white" data-i18n="foot.docs">文档</a>
-        <a href="https://github.com/cnyg1025/drone-disaster-platform/issues" target="_blank" rel="noopener" class="hover:text-white" data-i18n="foot.feedback">反馈</a>
+        <a href="https://github.com/cnyg1025" target="_blank" rel="noopener" class="hover:text-white">GitHub</a>
+        <a href="https://github.com/cnyg1025/drone-app-demo/blob/main/docs/user-guide.md" target="_blank" rel="noopener" class="hover:text-white" data-i18n="foot.docs">文档</a>
+        <a href="https://github.com/cnyg1025/drone-app-demo/issues" target="_blank" rel="noopener" class="hover:text-white" data-i18n="foot.feedback">反馈</a>
         <a href="mailto:cnyg1025@users.noreply.github.com" class="hover:text-white" data-i18n="foot.contact">联系</a>
       </div>
     </div>

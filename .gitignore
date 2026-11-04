@@ -1,0 +1,20 @@
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editors
+.vscode/
+.idea/
+*.swp
+
+# Logs / temp
+*.log
+npm-debug.log*
+.tmp/
+tmp/
+
+# Local tooling (this repo ships build output, not sources)
+node_modules/
+.env
+.env.*
