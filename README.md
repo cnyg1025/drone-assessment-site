@@ -35,7 +35,15 @@ assets/             站点使用的图片
 | 联系方式 | 搜索 `mailto:` |
 | 配色 | `<script>` 中 `tailwind.config` 与 `<style>` 段 |
 
-> ⚠️ 当前样式依赖 `https://cdn.tailwindcss.com`（浏览器端编译）。若目标用户在中国大陆，建议改为预编译 CSS——见整改清单 P0-2。
+> **样式已本地化**：原先依赖 `https://cdn.tailwindcss.com`（浏览器端实时编译），现改为仓库内的预编译 `tailwind.css`（约 16 KB），页面不再有第三方单点依赖。
+>
+> 如果新增或修改了 Tailwind 类名，需要重新生成样式：
+>
+> ```bash
+> npx tailwindcss@3 -i /dev/null -o tailwind.css --content index.html --minify
+> ```
+>
+> 或临时把 `tailwind.css` 换回 CDN 的 `<script>` 采一次样式，再换回 `<link>`。
 
 ## 许可
 

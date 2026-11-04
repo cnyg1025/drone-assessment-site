@@ -17,30 +17,7 @@
   <meta name="twitter:image" content="https://cnyg1025.github.io/drone-assessment-site/assets/hero.png" />
   <link rel="canonical" href="https://cnyg1025.github.io/drone-assessment-site/" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M3 12l9-9 9 9M5 10v10h14V10' fill='none' stroke='%232b8cff' stroke-width='2'/%3E%3C/svg%3E" />
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            brand: {
-              50: '#eef7ff', 100: '#d9edff', 200: '#bce0ff', 300: '#8eccff',
-              400: '#53aeff', 500: '#2b8cff', 600: '#1470f5', 700: '#0f5ae1',
-              800: '#134ab6', 900: '#163f8f',
-            },
-            ink: {
-              900: '#0a0f1c', 800: '#101728', 700: '#1a2236',
-              600: '#2a3552', 500: '#475569', 400: '#64748b',
-            }
-          },
-          fontFamily: {
-            sans: ['"PingFang SC"', '"Microsoft YaHei"', 'system-ui', 'sans-serif'],
-          },
-        }
-      }
-    }
-  </script>
-  <style>
+<style>
     body { font-family: 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif; }
     .gradient-text {
       background: linear-gradient(90deg, #2b8cff, #8eccff, #2b8cff);
@@ -83,6 +60,8 @@
     #lang-select { background-color: #101728; color: #e2e8f0; }
     #lang-select option { background-color: #101728; color: #e2e8f0; }
   </style>
+  <!-- 预编译样式（原 Tailwind Play CDN） -->
+  <link rel="stylesheet" href="tailwind.css" />
 </head>
 <body class="bg-ink-900 text-slate-100 antialiased">
 
