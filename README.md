@@ -24,7 +24,6 @@ python -m http.server 8000
 ```
 index.html          唯一页面（含三语文案与交互脚本）
 assets/             站点使用的图片
-assets/original/    原始大图（仅供后续切图，页面不引用）
 ```
 
 ## 修改指引
