@@ -144,8 +144,8 @@
       <!-- 指标条 -->
       <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
         <div class="glass rounded-2xl p-5">
-          <div class="text-3xl font-bold gradient-text"><span class="count" data-target="22.22" data-decimals="2">22.22</span>m</div>
-          <div class="text-xs text-slate-400 mt-1" data-i18n="hero.s1">配准漂移自动补偿</div>
+          <div class="text-3xl font-bold gradient-text"><span class="count" data-target="56.3" data-decimals="1">56.3</span>m</div>
+          <div class="text-xs text-slate-400 mt-1" data-i18n="hero.s1">无 GCP 水平漂移（实测）</div>
         </div>
         <div class="glass rounded-2xl p-5">
           <div class="text-3xl font-bold gradient-text"><span class="count" data-target="86.7" data-decimals="1">86.7</span>%</div>
@@ -204,7 +204,7 @@
           </div>
           <h3 class="text-xl font-bold mb-2" data-i18n="cap.c2t">双期自动配准定损</h3>
           <p class="text-slate-300 mb-4" data-i18n="cap.c2d">FFT 互相关自动补偿两期地理漂移 · 中位数基准垂直对齐 · 差值可视化与统计。</p>
-          <div class="text-xs text-slate-400" data-i18n="cap.c2n">验证指标：22.22m 水平偏移自动补偿 · RMS 7.6m</div>
+          <div class="text-xs text-slate-400" data-i18n="cap.c2n">实测：无 GCP 水平漂移 56.3m · 校正后稳定区 RMS 4.0m</div>
         </div>
 
         <div class="card-glow glass rounded-2xl p-7 transition">
@@ -283,16 +283,16 @@
             </div>
             <h3 class="text-2xl font-bold mb-3" data-i18n="proof.p1h3">brighton_beach 双期对比定损</h3>
             <p class="text-slate-300 leading-relaxed mb-4" data-i18n="proof.p1p">
-              基于 18 张公开航拍影像（约 0.3 km² 海岸线）构造灾前/灾后双期场景。在<strong class="text-white">无 GCP</strong> 条件下，两期重建地理放置差 <span class="text-amber-400 font-semibold">22.22m</span>，平台自动 FFT 配准补偿至 RMS <span class="text-emerald-400 font-semibold">7.6m</span>，达到可交付的定损精度。
+              基于 18 张公开航拍影像（约 0.3 km² 海岸线）构造灾前/灾后双期场景。在<strong class="text-white">无 GCP</strong> 条件下，两期重建地理放置差 <span class="text-amber-400 font-semibold">56.3m</span>，经 FFT 自动配准与平面倾斜校正后，稳定区高程差 RMS 由 17.8m 降至 <span class="text-emerald-400 font-semibold">4.0m</span>，达到可交付的定损精度。
             </p>
             <div class="flex gap-3 mb-4">
               <div class="bg-ink-900 rounded-xl px-4 py-3 border border-slate-700">
-                <div class="text-xl font-bold text-amber-400">22.22m</div>
-                <div class="text-xs text-slate-400" data-i18n="proof.p1c1">自动补偿偏移</div>
+                <div class="text-xl font-bold text-amber-400">56.3m</div>
+                <div class="text-xs text-slate-400" data-i18n="proof.p1c1">无 GCP 水平漂移</div>
               </div>
               <div class="bg-ink-900 rounded-xl px-4 py-3 border border-slate-700">
-                <div class="text-xl font-bold text-emerald-400">7.6m</div>
-                <div class="text-xs text-slate-400" data-i18n="proof.p1c2">配准后 RMS</div>
+                <div class="text-xl font-bold text-emerald-400">4.0m</div>
+                <div class="text-xs text-slate-400" data-i18n="proof.p1c2">校正后稳定区 RMS</div>
               </div>
             </div>
             <span class="text-xs text-slate-500" data-i18n="proof.p1n">说明：无需地面控制点即可对齐双期成果，适用于灾后无布点条件的应急评估</span>
@@ -522,13 +522,13 @@
         "hero.h1a": "开源低空智能评估平台", "hero.h1b": "让灾后评估，一次航拍完成",
         "hero.p": "面向灾后应急、环境监测与生态巡护场景，以 <span class='text-brand-400 font-semibold'>WebODM + 多源传感器 + AI 几何配准</span> 为核心，用 <span class='font-semibold text-white'>1/10 成本</span>、<span class='font-semibold text-white'>零 GCP 布点</span>产出商业级航拍评估成果。",
         "hero.cta1": "预约产品 Demo", "hero.cta2": "查看核心能力 →",
-        "hero.s1": "配准漂移自动补偿", "hero.s2": "热红外目标检出率", "hero.s3": "植被分级误差", "hero.s4": "对比商业方案成本",
+        "hero.s1": "无 GCP 水平漂移（实测）", "hero.s2": "热红外目标检出率", "hero.s3": "植被分级误差", "hero.s4": "对比商业方案成本",
         "hero.cap": "以上为内部技术验证指标 · 详见下方「技术验证」",
         "hero.imgcap": "航拍扫描作业示意 · 自动扫描网格 · 无需地面控制点",
         "cap.eyebrow": "4 大核心能力", "cap.h2": "从航拍到洞察，端到端打通",
         "cap.sub": "四大模块已完成端到端开发与内部验证，正在寻找真实场景落地。",
         "cap.c1t": "3D 重建任务管理", "cap.c1d": "上传多视影像，自动 SfM 摄影测量，输出正射图/DSM/DTM/点云。", "cap.c1n": "支持 18~1000+ 张影像 · 单任务 5~30 分钟",
-        "cap.c2b": "⭐ 核心差异化", "cap.c2t": "双期自动配准定损", "cap.c2d": "FFT 互相关自动补偿两期地理漂移 · 中位数基准垂直对齐 · 差值可视化与统计。", "cap.c2n": "验证指标：22.22m 水平偏移自动补偿 · RMS 7.6m",
+        "cap.c2b": "⭐ 核心差异化", "cap.c2t": "双期自动配准定损", "cap.c2d": "FFT 互相关自动补偿两期地理漂移 · 中位数基准垂直对齐 · 差值可视化与统计。", "cap.c2n": "实测：无 GCP 水平漂移 56.3m · 校正后稳定区 RMS 4.0m",
         "cap.c3t": "UXO 未爆物探测", "cap.c3d": "EMI 电磁感应 + GPR 探地雷达 + MAG 磁法三源融合，AI 聚类风险分级。", "cap.c3n": "S1~S5 阶段全链路完成 · 含专家审核流",
         "cap.c4b": "🆕 v0.4 新增", "cap.c4t": "传感器智能分析", "cap.c4d": "4a 热红外野生动物探测 + 4b 多光谱植被受损分级，DBSCAN 聚群 + 多指数融合。", "cap.c4n": "内部基准：检出率 86.7% · 分级误差 0.04%",
         "plat.eyebrow": "平台全景", "plat.h2": "一张 DSM，看见整个现场",
@@ -539,8 +539,8 @@
         "proof.sub": "以下为开发阶段基于公开数据集与合成基准的技术验证结果。",
         "proof.tagPublic": "公开数据集", "proof.tagSynthetic": "合成基准", "proof.tagSynthetic2": "合成基准",
         "proof.p1label": "验证 01 · 对比定损", "proof.p1h3": "brighton_beach 双期对比定损",
-        "proof.p1p": "基于 18 张公开航拍影像（约 0.3 km² 海岸线）构造灾前/灾后双期场景。在<strong class='text-white'>无 GCP</strong> 条件下，两期重建地理放置差 <span class='text-amber-400 font-semibold'>22.22m</span>，平台自动 FFT 配准补偿至 RMS <span class='text-emerald-400 font-semibold'>7.6m</span>，达到可交付的定损精度。",
-        "proof.p1c1": "自动补偿偏移", "proof.p1c2": "配准后 RMS",
+        "proof.p1p": "基于 18 张公开航拍影像（约 0.3 km² 海岸线）构造灾前/灾后双期场景。在<strong class='text-white'>无 GCP</strong> 条件下，两期重建地理放置差达 <span class='text-amber-400 font-semibold'>56.3m</span>；经 FFT 自动配准与平面倾斜校正后，稳定区高程差 RMS 由 17.8m 降至 <span class='text-emerald-400 font-semibold'>4.0m</span>，达到可交付的定损精度。",
+        "proof.p1c1": "无 GCP 水平漂移", "proof.p1c2": "校正后稳定区 RMS",
         "proof.p1n": "说明：无需地面控制点即可对齐双期成果，适用于灾后无布点条件的应急评估",
         "proof.p2label": "验证 02 · 多光谱", "proof.p2h3": "植被受损 4 级分级精度",
         "proof.p2p": "构造 4 类植被（健康/轻损/重损/枯死）各占 25% 的标准验证场景。平台输出分级面积比 <span class='text-white font-mono'>25.01% / 24.99% / 25.00% / 25.00%</span>，<span class='text-emerald-400 font-semibold'>误差 0.04%</span>，分级算法达到可用精度。",
@@ -575,13 +575,13 @@
         "hero.h1a": "Open-source low-altitude", "hero.h1b": "Post-disaster assessment in a single flight",
         "hero.p": "Built for disaster response, environmental monitoring and ecological patrol — powered by <span class='text-brand-400 font-semibold'>WebODM + multi-sensor fusion + AI geometric registration</span>, delivering <span class='font-semibold text-white'>commercial-grade</span> aerial assessment at <span class='font-semibold text-white'>1/10 the cost</span>, with zero GCP placement.",
         "hero.cta1": "Book a product demo", "hero.cta2": "Explore core capabilities →",
-        "hero.s1": "Auto-compensated registration drift", "hero.s2": "Thermal target detection rate", "hero.s3": "Vegetation classification error", "hero.s4": "Cost vs commercial solutions",
+        "hero.s1": "Horizontal drift without GCPs (measured)", "hero.s2": "Thermal target detection rate", "hero.s3": "Vegetation classification error", "hero.s4": "Cost vs commercial solutions",
         "hero.cap": "Internal technical validation metrics · see \"Validation\" below",
         "hero.imgcap": "Aerial scanning illustration · automatic grid · no ground control points needed",
         "cap.eyebrow": "4 core capabilities", "cap.h2": "From aerial capture to insight, end to end",
         "cap.sub": "All four modules are end-to-end complete and internally validated — now seeking real-world deployments.",
         "cap.c1t": "3D reconstruction task management", "cap.c1d": "Upload multi-view imagery; automatic SfM photogrammetry outputs orthophoto/DSM/DTM/point cloud.", "cap.c1n": "18–1000+ images per task · 5–30 min per task",
-        "cap.c2b": "⭐ Core differentiator", "cap.c2t": "Two-epoch automatic registration & damage assessment", "cap.c2d": "FFT cross-correlation auto-compensates geographic drift between epochs · median vertical datum alignment · difference visualization & statistics.", "cap.c2n": "Validated: 22.22 m horizontal offset auto-compensated · RMS 7.6 m",
+        "cap.c2b": "⭐ Core differentiator", "cap.c2t": "Two-epoch automatic registration & damage assessment", "cap.c2d": "FFT cross-correlation auto-compensates geographic drift between epochs · median vertical datum alignment · difference visualization & statistics.", "cap.c2n": "Measured: 56.3 m drift without GCPs · 4.0 m stable-area RMS after correction",
         "cap.c3t": "UXO detection", "cap.c3d": "EMI + GPR + MAG three-source fusion with AI clustering risk grading.", "cap.c3n": "Full pipeline complete through S1–S5 · expert review workflow",
         "cap.c4b": "🆕 New in v0.4", "cap.c4t": "Intelligent sensor analytics", "cap.c4d": "4a thermal wildlife detection + 4b multispectral vegetation damage grading, DBSCAN clustering + multi-index fusion.", "cap.c4n": "Internal benchmark: 86.7% detection · 0.04% grading error",
         "plat.eyebrow": "Platform overview", "plat.h2": "One DSM, the whole site at a glance",
@@ -592,8 +592,8 @@
         "proof.sub": "Development-stage validation on public datasets and synthetic benchmarks.",
         "proof.tagPublic": "Public dataset", "proof.tagSynthetic": "Synthetic benchmark", "proof.tagSynthetic2": "Synthetic benchmark",
         "proof.p1label": "Validation 01 · Change detection", "proof.p1h3": "brighton_beach two-epoch damage assessment",
-        "proof.p1p": "Two-epoch pre/post-disaster scenario built from 18 public aerial images (~0.3 km² of coastline). Without GCPs, the two reconstructions drifted <span class='text-amber-400 font-semibold'>22.22 m</span> apart; automatic FFT registration compensated to <span class='text-emerald-400 font-semibold'>7.6 m RMS</span> — deliverable damage-assessment accuracy.",
-        "proof.p1c1": "Auto-compensated offset", "proof.p1c2": "Post-registration RMS",
+        "proof.p1p": "Two-epoch pre/post-disaster scenario built from 18 public aerial images (~0.3 km² of coastline). Without GCPs, the two reconstructions drifted <span class='text-amber-400 font-semibold'>56.3 m</span> apart; after automatic FFT registration and plane (tilt) correction, the stable-area elevation RMS dropped from 17.8 m to <span class='text-emerald-400 font-semibold'>4.0 m</span> — deliverable damage-assessment accuracy.",
+        "proof.p1c1": "No-GCP horizontal drift", "proof.p1c2": "Stable-area RMS after correction",
         "proof.p1n": "Both epochs aligned without ground control points — suited to post-disaster rapid assessment with no field setup",
         "proof.p2label": "Validation 02 · Multispectral", "proof.p2h3": "4-level vegetation damage grading accuracy",
         "proof.p2p": "A reference scene with four vegetation classes (healthy / light / severe / dead) at 25% each. Platform output: <span class='text-white font-mono'>25.01% / 24.99% / 25.00% / 25.00%</span> — <span class='text-emerald-400 font-semibold'>0.04% error</span>, production-ready accuracy.",
@@ -628,13 +628,13 @@
         "hero.h1a": "Plateforme open-source", "hero.h1b": "L'évaluation post-catastrophe en un seul vol",
         "hero.p": "Conçue pour l'urgence post-catastrophe, le suivi environnemental et la patrouille écologique — propulsée par <span class='text-brand-400 font-semibold'>WebODM + capteurs multi-sources + recalage géométrique par IA</span>, elle livre des évaluations aériennes de <span class='font-semibold text-white'>niveau professionnel</span> pour <span class='font-semibold text-white'>1/10 du coût</span>, sans aucun point de contrôle au sol.",
         "hero.cta1": "Demander une démo produit", "hero.cta2": "Découvrir les capacités clés →",
-        "hero.s1": "Dérive de recalage auto-compensée", "hero.s2": "Taux de détection thermique", "hero.s3": "Erreur de classification végétale", "hero.s4": "Coût vs solutions commerciales",
+        "hero.s1": "Dérive horizontale sans GCP (mesurée)", "hero.s2": "Taux de détection thermique", "hero.s3": "Erreur de classification végétale", "hero.s4": "Coût vs solutions commerciales",
         "hero.cap": "Indicateurs de validation technique interne · voir « Validation » ci-dessous",
         "hero.imgcap": "Illustration de scan aérien · grille automatique · sans point de contrôle au sol",
         "cap.eyebrow": "4 capacités clés", "cap.h2": "De la prise de vue aérienne à l'analyse, de bout en bout",
         "cap.sub": "Les quatre modules sont développés et validés en interne — nous cherchons des déploiements réels.",
         "cap.c1t": "Gestion des tâches de reconstruction 3D", "cap.c1d": "Téléversez des images multi-vues : photogrammétrie SfM automatique, sorties orthophoto/MNS/MNT/nuage de points.", "cap.c1n": "18 à 1000+ images par tâche · 5 à 30 min par tâche",
-        "cap.c2b": "⭐ Différenciateur clé", "cap.c2t": "Évaluation des dégâts par recalage automatique bi-période", "cap.c2d": "La corrélation croisée FFT compense automatiquement la dérive géographique entre les deux périodes · alignement vertical par médiane · visualisation et statistiques des écarts.", "cap.c2n": "Validé : décalage horizontal de 22,22 m auto-compensé · RMS 7,6 m",
+        "cap.c2b": "⭐ Différenciateur clé", "cap.c2t": "Évaluation des dégâts par recalage automatique bi-période", "cap.c2d": "La corrélation croisée FFT compense automatiquement la dérive géographique entre les deux périodes · alignement vertical par médiane · visualisation et statistiques des écarts.", "cap.c2n": "Mesuré : dérive de 56,3 m sans points de contrôle · RMS 4,0 m après correction",
         "cap.c3t": "Détection UXO", "cap.c3d": "Fusion triple EMI + GPR + MAG, classification des risques par clustering IA.", "cap.c3n": "Chaîne complète S1–S5 · flux de validation expert",
         "cap.c4b": "🆕 Nouveau en v0.4", "cap.c4t": "Analyse intelligente des capteurs", "cap.c4d": "4a détection thermique de la faune + 4b classification multispectrale des dégâts végétaux, clustering DBSCAN + fusion multi-indices.", "cap.c4n": "Benchmark interne : 86,7 % de détection · 0,04 % d'erreur",
         "plat.eyebrow": "Aperçu de la plateforme", "plat.h2": "Un MNS, tout le site en un coup d'œil",
@@ -645,8 +645,8 @@
         "proof.sub": "Validation en phase de développement sur jeux de données publics et bancs synthétiques.",
         "proof.tagPublic": "Jeu de données public", "proof.tagSynthetic": "Banc synthétique", "proof.tagSynthetic2": "Banc synthétique",
         "proof.p1label": "Validation 01 · Détection de changements", "proof.p1h3": "Évaluation bi-période brighton_beach",
-        "proof.p1p": "Scénario avant/après construit à partir de 18 images aériennes publiques (~0,3 km² de littoral). Sans points de contrôle, les deux reconstructions divergeaient de <span class='text-amber-400 font-semibold'>22,22 m</span> ; le recalage FFT automatique a compensé à <span class='text-emerald-400 font-semibold'>7,6 m RMS</span> — une précision livrable.",
-        "proof.p1c1": "Décalage auto-compensé", "proof.p1c2": "RMS après recalage",
+        "proof.p1p": "Scénario avant/après construit à partir de 18 images aériennes publiques (~0,3 km² de littoral). Sans points de contrôle, les deux reconstructions divergeaient de <span class='text-amber-400 font-semibold'>56,3 m</span> ; après recalage FFT automatique et correction du plan (inclinaison), le RMS d'élévation de la zone stable est passé de 17,8 m à <span class='text-emerald-400 font-semibold'>4,0 m</span> — une précision livrable.",
+        "proof.p1c1": "Dérive horizontale sans GCP", "proof.p1c2": "RMS zone stable après correction",
         "proof.p1n": "Alignement sans points de contrôle — adapté à l'évaluation d'urgence post-catastrophe sans installation terrain",
         "proof.p2label": "Validation 02 · Multispectral", "proof.p2h3": "Précision de classification des dégâts végétaux en 4 niveaux",
         "proof.p2p": "Scène de référence avec quatre classes de végétation (saine / légère / sévère / morte) à 25 % chacune. Sortie de la plateforme : <span class='text-white font-mono'>25,01 % / 24,99 % / 25,00 % / 25,00 %</span> — <span class='text-emerald-400 font-semibold'>0,04 % d'erreur</span>, précision exploitable.",
